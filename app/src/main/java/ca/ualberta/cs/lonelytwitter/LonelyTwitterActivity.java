@@ -12,19 +12,20 @@ import java.util.Date;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 public class LonelyTwitterActivity extends Activity {
 
 	private static final String FILENAME = "file.sav";
 	private EditText bodyText;
 	private ListView oldTweetsList;
-	
+	private ArrayList <String> Array_1 = new ArrayList<String>();
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -33,32 +34,58 @@ public class LonelyTwitterActivity extends Activity {
 
 		bodyText = (EditText) findViewById(R.id.body);
 		Button saveButton = (Button) findViewById(R.id.save);
+        //Button EmotionButton = (Button) findViewById(R.id.add);
 		oldTweetsList = (ListView) findViewById(R.id.oldTweetsList);
+
 
 		saveButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-
-					Cat cat1=new Cat("I am a cat","I love fish");
-					//cat1.setType("I am a cat");
-					//cat1.setFood("I love fish and rice");
-
-					DomesticDuck domesticDuck1=new DomesticDuck("I am a domestic duck","I love fish");
-					//domesticDuck1.setType("I am a domestic duck");
-					//domesticDuck1.setFood("I love fish");
-
-
-					Log.d("cmput-301",cat1.getType());
-					Log.d("cmput-301",cat1.getFood());
-					Log.d("cmput-301",domesticDuck1.getType());
-					Log.d("cmput-301",domesticDuck1.getFood());
-
-					cat1.swim();
-					domesticDuck1.swim();
-				/*setResult(RESULT_OK);
+				//setResult(RESULT_OK);
 				String text = bodyText.getText().toString();
+				ImportantTweet importantTweet = new ImportantTweet();
+				try {
+					importantTweet.setMessage(text);
+				} catch (TweetTooLongException e) {
+
+				}
+				//saveInFile(text, new Date(System.currentTimeMillis()));
+				Array_1.add(text);
+				ArrayAdapter<String> adapter_1 = new ArrayAdapter<String>(LonelyTwitterActivity.this, android.R.layout.simple_expandable_list_item_1, Array_1);
+				oldTweetsList.setAdapter(adapter_1);
+				((EditText)findViewById(R.id.body)).setText("");
 				saveInFile(text, new Date(System.currentTimeMillis()));
-				finish();*/
+				/*
+				final Spinner mySpinner = (Spinner) findViewById(R.id.spinner1);
+				String selection = mySpinner.getSelectedItem().toString();
+
+				if (selection.compareTo("Happy") == 0){
+
+					String text_1 = bodyText.getText().toString();
+					String modified_text = " Happy! "+text_1;
+
+					saveInFile(modified_text, new Date(System.currentTimeMillis()));
+				}
+				else if (selection.compareTo("Sad") == 0){
+
+					String text_1 = bodyText.getText().toString();
+					String modified_text = " Sad! "+text_1;
+					saveInFile(modified_text, new Date(System.currentTimeMillis()));
+				}
+				else if (selection.compareTo("Angry") == 0){
+					String text_1 = bodyText.getText().toString();
+					String modified_text = " Angry!  "+text_1;
+					saveInFile(modified_text, new Date(System.currentTimeMillis()));
+				}
+				else{
+					String text_1 = bodyText.getText().toString();
+					String modified_text = " Thrilled!  "+text_1;
+					saveInFile(modified_text, new Date(System.currentTimeMillis()));
+				}
+*/
+
+
+				//finish();
 
 			}
 		});
@@ -66,7 +93,6 @@ public class LonelyTwitterActivity extends Activity {
 
 	@Override
 	protected void onStart() {
-		// TODO Auto-generated method stub
 		super.onStart();
 		String[] tweets = loadFromFile();
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -94,10 +120,14 @@ public class LonelyTwitterActivity extends Activity {
 		}
 		return tweets.toArray(new String[tweets.size()]);
 	}
-	
+
 	private void saveInFile(String text, Date date) {
 		try {
-			FileOutputStream fos = openFileOutput(FILENAME,
+
+		    NormalTweet myTweet = new NormalTweet("");
+		    myTweet.setMessage("I am looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong message");
+
+		    FileOutputStream fos = openFileOutput(FILENAME,
 					Context.MODE_APPEND);
 			fos.write(new String(date.toString() + " | " + text)
 					.getBytes());
@@ -109,5 +139,8 @@ public class LonelyTwitterActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		catch (TweetTooLongException e) {
+            e.printStackTrace();
+        }
 	}
 }
