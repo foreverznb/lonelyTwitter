@@ -49,40 +49,44 @@ public class LonelyTwitterActivity extends Activity {
 				} catch (TweetTooLongException e) {
 
 				}
+
+
+
 				//saveInFile(text, new Date(System.currentTimeMillis()));
-				Array_1.add(text);
-				ArrayAdapter<String> adapter_1 = new ArrayAdapter<String>(LonelyTwitterActivity.this, android.R.layout.simple_expandable_list_item_1, Array_1);
-				oldTweetsList.setAdapter(adapter_1);
-				((EditText)findViewById(R.id.body)).setText("");
-				saveInFile(text, new Date(System.currentTimeMillis()));
-				/*
+
+				String modified_text = "";
+
 				final Spinner mySpinner = (Spinner) findViewById(R.id.spinner1);
 				String selection = mySpinner.getSelectedItem().toString();
 
 				if (selection.compareTo("Happy") == 0){
 
-					String text_1 = bodyText.getText().toString();
-					String modified_text = " Happy! "+text_1;
+					//String text_1 = bodyText.getText().toString();
+					modified_text = " Happy! "+text + new Date(System.currentTimeMillis());
 
-					saveInFile(modified_text, new Date(System.currentTimeMillis()));
+					saveInFile(" Happy! "+text , new Date(System.currentTimeMillis()));
 				}
 				else if (selection.compareTo("Sad") == 0){
 
-					String text_1 = bodyText.getText().toString();
-					String modified_text = " Sad! "+text_1;
-					saveInFile(modified_text, new Date(System.currentTimeMillis()));
+					//String text_1 = bodyText.getText().toString();
+					modified_text = " Sad! "+text + new Date(System.currentTimeMillis());
+					saveInFile(" Sad! "+text, new Date(System.currentTimeMillis()));
 				}
 				else if (selection.compareTo("Angry") == 0){
-					String text_1 = bodyText.getText().toString();
-					String modified_text = " Angry!  "+text_1;
-					saveInFile(modified_text, new Date(System.currentTimeMillis()));
+					//String text_1 = bodyText.getText().toString();
+					modified_text = " Angry!  "+text + new Date(System.currentTimeMillis());
+					saveInFile(" Angry!  " + text, new Date(System.currentTimeMillis()));
 				}
 				else{
-					String text_1 = bodyText.getText().toString();
-					String modified_text = " Thrilled!  "+text_1;
-					saveInFile(modified_text, new Date(System.currentTimeMillis()));
+					//String text_1 = bodyText.getText().toString();
+					modified_text = " Thrilled!  "+text + new Date(System.currentTimeMillis());
+					saveInFile(" Thrilled!  " + text, new Date(System.currentTimeMillis()));
 				}
-*/
+
+				Array_1.add(modified_text);
+				ArrayAdapter<String> adapter_1 = new ArrayAdapter<String>(LonelyTwitterActivity.this, android.R.layout.simple_expandable_list_item_1, Array_1);
+				oldTweetsList.setAdapter(adapter_1);
+				((EditText)findViewById(R.id.body)).setText(" ");
 
 
 				//finish();
@@ -93,6 +97,7 @@ public class LonelyTwitterActivity extends Activity {
 
 	@Override
 	protected void onStart() {
+		// TODO Auto-generated method stub
 		super.onStart();
 		String[] tweets = loadFromFile();
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -123,11 +128,7 @@ public class LonelyTwitterActivity extends Activity {
 
 	private void saveInFile(String text, Date date) {
 		try {
-
-		    NormalTweet myTweet = new NormalTweet("");
-		    myTweet.setMessage("I am looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong message");
-
-		    FileOutputStream fos = openFileOutput(FILENAME,
+			FileOutputStream fos = openFileOutput(FILENAME,
 					Context.MODE_APPEND);
 			fos.write(new String(date.toString() + " | " + text)
 					.getBytes());
@@ -139,8 +140,5 @@ public class LonelyTwitterActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		catch (TweetTooLongException e) {
-            e.printStackTrace();
-        }
 	}
 }
