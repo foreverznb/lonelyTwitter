@@ -50,10 +50,8 @@ public class LonelyTwitterActivity extends Activity {
 
 				}
 
-
-
 				//saveInFile(text, new Date(System.currentTimeMillis()));
-
+				//text += " on ";
 				String modified_text = "";
 
 				final Spinner mySpinner = (Spinner) findViewById(R.id.spinner1);
@@ -62,24 +60,24 @@ public class LonelyTwitterActivity extends Activity {
 				if (selection.compareTo("Happy") == 0){
 
 					//String text_1 = bodyText.getText().toString();
-					modified_text = " Happy! "+text + new Date(System.currentTimeMillis());
+					modified_text = " Happy! "+text + " on " + new Date(System.currentTimeMillis());
 
 					saveInFile(" Happy! "+text , new Date(System.currentTimeMillis()));
 				}
 				else if (selection.compareTo("Sad") == 0){
 
 					//String text_1 = bodyText.getText().toString();
-					modified_text = " Sad! "+text + new Date(System.currentTimeMillis());
+					modified_text = " Sad! "+text + " on "+ new Date(System.currentTimeMillis());
 					saveInFile(" Sad! "+text, new Date(System.currentTimeMillis()));
 				}
 				else if (selection.compareTo("Angry") == 0){
 					//String text_1 = bodyText.getText().toString();
-					modified_text = " Angry!  "+text + new Date(System.currentTimeMillis());
+					modified_text = " Angry!  "+text + " on "+ new Date(System.currentTimeMillis());
 					saveInFile(" Angry!  " + text, new Date(System.currentTimeMillis()));
 				}
 				else{
 					//String text_1 = bodyText.getText().toString();
-					modified_text = " Thrilled!  "+text + new Date(System.currentTimeMillis());
+					modified_text = " Thrilled!  "+text + " on "+ new Date(System.currentTimeMillis());
 					saveInFile(" Thrilled!  " + text, new Date(System.currentTimeMillis()));
 				}
 
