@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) Team X, CMPUT301, University of Alberta - All Rights Reserved. You may use, distribute, or modify this code under terms and conditions of the Code of Students Behavior at University of Alberta
+ *
+ *
+ */
+
 package ca.ualberta.cs.lonelytwitter;
 
 import java.io.BufferedReader;
@@ -27,55 +33,57 @@ import com.google.gson.reflect.TypeToken;
 
 public class LonelyTwitterActivity extends Activity {
 
-	private static final String FILENAME = "file.sav";
-	private EditText bodyText;
-	private ListView oldTweetsList;
-	private ArrayList <String> Array_1 = new ArrayList<String>();
-	private ArrayList <Tweet> tweets = new ArrayList<Tweet>();
-	private ArrayAdapter<Tweet> adapter;
-	//private ArrayList <Tweet> empty_list = new ArrayList<Tweet>();
+    private static final String FILENAME = "file.sav";
+    private EditText bodyText;
+    private ListView oldTweetsList;
+    private ArrayList<String> Array_1 = new ArrayList<String>();
+    private ArrayList<Tweet> tweets = new ArrayList<Tweet>();
+    private ArrayAdapter<Tweet> adapter;
+    //private ArrayList <Tweet> empty_list = new ArrayList<Tweet>();
 
-	/** Called when the activity is first created. */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+    /**
+     * Called when the activity is first created.
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
 
-		bodyText = (EditText) findViewById(R.id.body);
-		Button saveButton = (Button) findViewById(R.id.save);
-		Button clearButton = (Button) findViewById(R.id.clear);
+        bodyText = (EditText) findViewById(R.id.body);
+        Button saveButton = (Button) findViewById(R.id.save);
+        Button clearButton = (Button) findViewById(R.id.clear);
         //Button EmotionButton = (Button) findViewById(R.id.add);
-		oldTweetsList = (ListView) findViewById(R.id.oldTweetsList);
+        oldTweetsList = (ListView) findViewById(R.id.oldTweetsList);
 
-		clearButton.setOnClickListener(new View.OnClickListener() {
+        clearButton.setOnClickListener(new View.OnClickListener() {
 
-			public void onClick(View v) {
-				tweets.clear();
-				saveInFile();
-				adapter.notifyDataSetChanged();
-			}
-		});
+            public void onClick(View v) {
+                tweets.clear();
+                saveInFile();
+                adapter.notifyDataSetChanged();
+            }
+        });
 
-		saveButton.setOnClickListener(new View.OnClickListener() {
+        saveButton.setOnClickListener(new View.OnClickListener() {
 
-			public void onClick(View v) {
-				//setResult(RESULT_OK);
-				String text = bodyText.getText().toString();
-				ImportantTweet newTweet = new ImportantTweet();
+            public void onClick(View v) {
+                //setResult(RESULT_OK);
+                String text = bodyText.getText().toString();
+                ImportantTweet newTweet = new ImportantTweet();
 
-				try {
-					newTweet.setMessage(text);
-					newTweet.setDate(new Date());
-					//saveInFile(" Happy! " + text + "  " , new Date(System.currentTimeMillis()));
-					tweets.add(newTweet);
-					adapter.notifyDataSetChanged();
-					saveInFile();
-				} catch (TweetTooLongException e) {
+                try {
+                    newTweet.setMessage(text);
+                    newTweet.setDate(new Date());
+                    //saveInFile(" Happy! " + text + "  " , new Date(System.currentTimeMillis()));
+                    tweets.add(newTweet);
+                    adapter.notifyDataSetChanged();
+                    saveInFile();
+                } catch (TweetTooLongException e) {
 
-				}
+                }
 
-				//saveInFile(text, new Date(System.currentTimeMillis()));
-				//text += " on ";
+                //saveInFile(text, new Date(System.currentTimeMillis()));
+                //text += " on ";
 				/*String modified_text = "";
 
 				final Spinner mySpinner = (Spinner) findViewById(R.id.spinner1);
@@ -112,61 +120,62 @@ public class LonelyTwitterActivity extends Activity {
 				//((EditText)findViewById(R.id.body)).setText(" ");
 
                 */
-				//finish();
+                //finish();
 
-			}
-		});
-	}
+            }
+        });
+    }
 
-	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-		loadFromFile();
-		adapter = new ArrayAdapter<Tweet>(this,
-				R.layout.list_item, tweets);
-		oldTweetsList.setAdapter(adapter);
-	}
+    @Override
+    protected void onStart() {
+        // TODO Auto-generated method stub
+        super.onStart();
+        loadFromFile();
+        adapter = new ArrayAdapter<Tweet>(this,
+                R.layout.list_item, tweets);
+        oldTweetsList.setAdapter(adapter);
+    }
 
-	private void  loadFromFile() {
-		//ArrayList<String> tweets = new ArrayList<String>();
-		try {
-		    FileInputStream fis = openFileInput(FILENAME);
-		    InputStreamReader isr= new InputStreamReader(fis);
-		    BufferedReader reader = new BufferedReader(isr);
-		    Gson gson = new Gson();
-            Type listTweetType=new TypeToken<ArrayList<ImportantTweet>>(){}.getType();
-		    tweets=gson.fromJson(reader,listTweetType);
+    private void loadFromFile() {
+        //ArrayList<String> tweets = new ArrayList<String>();
+        try {
+            FileInputStream fis = openFileInput(FILENAME);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader reader = new BufferedReader(isr);
+            Gson gson = new Gson();
+            Type listTweetType = new TypeToken<ArrayList<ImportantTweet>>() {
+            }.getType();
+            tweets = gson.fromJson(reader, listTweetType);
 
 
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
 
-			//tweets = new ArrayList<Tweet>();
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//return tweets.toArray(new String[tweets.size()]);
-	}
+            //tweets = new ArrayList<Tweet>();
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        //return tweets.toArray(new String[tweets.size()]);
+    }
 
-	private void saveInFile() {
-		try {
-			FileOutputStream fos= openFileOutput(FILENAME,0);
-			OutputStreamWriter osw= new OutputStreamWriter(fos);
-			BufferedWriter writer= new BufferedWriter(osw);
-			Gson gson = new Gson();
-			gson.toJson(tweets,writer);
-			writer.flush();
-			fos.close();
+    private void saveInFile() {
+        try {
+            FileOutputStream fos = openFileOutput(FILENAME, 0);
+            OutputStreamWriter osw = new OutputStreamWriter(fos);
+            BufferedWriter writer = new BufferedWriter(osw);
+            Gson gson = new Gson();
+            gson.toJson(tweets, writer);
+            writer.flush();
+            fos.close();
 
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 }
