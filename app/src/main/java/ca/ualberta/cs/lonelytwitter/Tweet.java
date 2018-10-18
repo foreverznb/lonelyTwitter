@@ -1,6 +1,7 @@
 package ca.ualberta.cs.lonelytwitter;
 
 import java.util.Date;
+import io.searchbox.annotations.JestId;
 
 /**
  * Represents a Tweet
@@ -18,6 +19,10 @@ public abstract class Tweet {
     private Date date;
     private String message;
     private static final Integer MAX_CHARS = 140;
+
+    @JestId
+    private String tweetID;
+
 
     /**
      * Constructs Tweet objects
